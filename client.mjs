@@ -1,4 +1,4 @@
-import { Fragment, Teleport, computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { Fragment, Teleport, Transition, computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import generated from 'virtual:vitepress-headup/data'
 
 const INFO_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.713 16.713Q13 16.425 13 16v-4q0-.425-.288-.712T12 11t-.712.288T11 12v4q0 .425.288.713T12 17t.713-.288m0-8Q13 8.425 13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9t.713-.288M12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"/></svg>'
@@ -106,24 +106,32 @@ function ensureAnchor(id, mode, selector) {
   }
 
   const appearance = document.querySelector('.VPNavBarAppearance')
-  const social = document.querySelector('.VPSocialLinks, .VPNavBarSocialLinks')
+  const social = document.querySelector('.VPNavBarSocialLinks, .VPSocialLinks')
   const extra = document.querySelector('.VPNavBarExtra')
   const contentBody = document.querySelector('.VPNavBar .content-body, .VPNavBar .content')
 
   if (mode === 'detail') {
-    const target = social || appearance || extra || contentBody
-    if (target?.parentElement) {
-      target.parentElement.insertBefore(anchor, target.nextSibling)
+    if (social) {
+      social.appendChild(anchor)
+      return true
+    }
+    if (appearance) {
+      appearance.appendChild(anchor)
+      return true
+    }
+    const target = extra || contentBody
+    if (target) {
+      target.appendChild(anchor)
       return true
     }
   } else {
-    if (appearance?.parentElement) {
-      appearance.parentElement.insertBefore(anchor, appearance)
+    if (appearance) {
+      appearance.insertBefore(anchor, appearance.firstChild)
       return true
     }
     const target = extra || social || contentBody
-    if (target?.parentElement) {
-      target.parentElement.insertBefore(anchor, target)
+    if (target) {
+      target.insertBefore(anchor, target.firstChild)
       return true
     }
   }
@@ -211,7 +219,7 @@ export const Headup = defineComponent({
     }
 
     const detailButton = () => h('button', {
-      class: ['vp-headup-icon', runtime.value.style?.iconClass],
+      class: ['VPSocialLink', 'no-icon', 'vp-headup-icon', runtime.value.style?.iconClass],
       style: styleVars.value,
       type: 'button',
       title: runtime.value.detail?.iconLabel || 'Open site information',
@@ -220,10 +228,12 @@ export const Headup = defineComponent({
       onClick: () => { open.value = true }
     })
 
-    const modal = () => open.value
-      ? h(Teleport, { to: 'body' }, [
-        h('div', { class: 'vp-headup-backdrop', onClick: () => { open.value = false } }),
-        h('section', {
+    const modal = () => h(Teleport, { to: 'body' }, [
+      h(Transition, { name: 'vp-headup-fade', appear: true }, () => open.value
+        ? h('div', { class: 'vp-headup-backdrop', onClick: () => { open.value = false } })
+        : null),
+      h(Transition, { name: 'vp-headup-panel', appear: true }, () => open.value
+        ? h('section', {
           class: ['vp-headup-modal', runtime.value.style?.modalClass],
           style: styleVars.value,
           role: 'dialog',
@@ -257,8 +267,8 @@ export const Headup = defineComponent({
             ? h('pre', { class: 'vp-headup-custom' }, JSON.stringify(generated.custom, null, 2))
             : null
         ])
-      ])
-      : null
+        : null)
+    ])
 
     return () => {
       if (!runtime.value.enabled) return null

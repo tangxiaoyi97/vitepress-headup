@@ -49,7 +49,7 @@ export default withHeadup({
 })
 ```
 
-The HUD is inserted before the VitePress appearance switch when possible. The detail icon is inserted near social links when possible. The default HUD label is `{commit}` and renders nothing if no git commit is available.
+The HUD is inserted inside the native VitePress appearance area when possible, so default navbar separators stay intact. The detail icon is inserted inside the native social-links area and copies VitePress social-link dimensions and hover behavior. The default HUD label is `{commit}` and renders nothing if no git commit is available.
 
 ## Options
 

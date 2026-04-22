@@ -33,8 +33,8 @@
 }
 
 .vp-headup-pill:hover {
-  color: var(--vp-c-brand-1);
-  border-color: color-mix(in srgb, var(--vp-c-brand-1) 48%, var(--vp-c-divider));
+  color: var(--vp-headup-accent, var(--vp-c-brand-1));
+  border-color: color-mix(in srgb, var(--vp-headup-accent, var(--vp-c-brand-1)) 48%, var(--vp-c-divider));
   transform: translateY(-1px);
 }
 
@@ -46,8 +46,8 @@
   width: 7px;
   height: 7px;
   border-radius: 999px;
-  background: var(--vp-c-brand-1);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent);
+  background: var(--vp-headup-accent, var(--vp-c-brand-1));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--vp-headup-accent, var(--vp-c-brand-1)) 14%, transparent);
 }
 
 .vp-headup-dirty {
@@ -67,7 +67,7 @@
 }
 
 .vp-headup-icon:hover {
-  color: var(--vp-c-brand-1);
+  color: var(--vp-headup-accent, var(--vp-c-brand-1));
   background: var(--vp-c-default-soft);
   transform: translateY(-1px);
 }
@@ -82,7 +82,7 @@
   inset: 0;
   z-index: 90;
   background:
-    radial-gradient(circle at 75% 5%, color-mix(in srgb, var(--vp-c-brand-1) 22%, transparent), transparent 36%),
+    radial-gradient(circle at 75% 5%, color-mix(in srgb, var(--vp-headup-accent, var(--vp-c-brand-1)) 22%, transparent), transparent 36%),
     color-mix(in srgb, var(--vp-c-bg) 62%, transparent);
   backdrop-filter: blur(10px);
 }
@@ -114,7 +114,7 @@
 
 .vp-headup-kicker {
   margin: 0 0 4px;
-  color: var(--vp-c-brand-1);
+  color: var(--vp-headup-accent, var(--vp-c-brand-1));
   font-size: 12px;
   font-weight: 800;
   letter-spacing: .12em;
@@ -140,7 +140,7 @@
 }
 
 .vp-headup-close:hover {
-  color: var(--vp-c-brand-1);
+  color: var(--vp-headup-accent, var(--vp-c-brand-1));
 }
 
 .vp-headup-grid {

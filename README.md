@@ -73,6 +73,16 @@ headupPlugin({
     title: 'Site information',
     iconLabel: 'Open site information'
   },
+  target: {
+    hud: 'auto',
+    detail: 'auto'
+  },
+  style: {
+    accentColor: '',
+    pillClass: '',
+    iconClass: '',
+    modalClass: ''
+  },
   git: {
     enabled: true,
     remote: true
@@ -88,6 +98,8 @@ headupPlugin({
   }
 })
 ```
+
+Set `target.hud` or `target.detail` to a CSS selector when a custom theme needs a precise insertion point. The default `auto` tries VitePress navbar selectors in a safe fallback order.
 
 ## Label templates
 

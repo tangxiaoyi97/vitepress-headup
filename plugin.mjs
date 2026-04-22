@@ -12,6 +12,16 @@ const DEFAULT_OPTIONS = {
     title: 'Site information',
     iconLabel: 'Open site information'
   },
+  target: {
+    hud: 'auto',
+    detail: 'auto'
+  },
+  style: {
+    accentColor: '',
+    pillClass: '',
+    iconClass: '',
+    modalClass: ''
+  },
   hud: {
     enabled: true,
     label: 'v{version}',

@@ -13,6 +13,16 @@ export interface HeadupPluginOptions {
     title?: string
     iconLabel?: string
   }
+  target?: {
+    hud?: string
+    detail?: string
+  }
+  style?: {
+    accentColor?: string
+    pillClass?: string
+    iconClass?: string
+    modalClass?: string
+  }
   git?: {
     enabled?: boolean
     remote?: boolean

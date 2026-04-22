@@ -16,6 +16,16 @@ const DEFAULT_RUNTIME = {
     title: 'Site information',
     iconLabel: 'Open site information'
   },
+  target: {
+    hud: 'auto',
+    detail: 'auto'
+  },
+  style: {
+    accentColor: '',
+    pillClass: '',
+    iconClass: '',
+    modalClass: ''
+  },
   locale: undefined,
   fallback: 'unknown'
 }
@@ -75,7 +85,7 @@ function getData(runtime) {
   }
 }
 
-function ensureAnchor(id, mode) {
+function ensureAnchor(id, mode, selector) {
   if (typeof document === 'undefined') return false
   let anchor = document.getElementById(id)
   if (!anchor) {
@@ -85,6 +95,15 @@ function ensureAnchor(id, mode) {
   }
 
   if (anchor.isConnected) return true
+
+  if (selector && selector !== 'auto') {
+    const customTarget = document.querySelector(selector)
+    if (customTarget?.parentElement) {
+      if (mode === 'detail') customTarget.parentElement.insertBefore(anchor, customTarget.nextSibling)
+      else customTarget.parentElement.insertBefore(anchor, customTarget)
+      return true
+    }
+  }
 
   const appearance = document.querySelector('.VPNavBarAppearance')
   const social = document.querySelector('.VPSocialLinks, .VPNavBarSocialLinks')
@@ -134,13 +153,17 @@ export const Headup = defineComponent({
     const readyDetail = ref(false)
     const open = ref(false)
     const data = computed(() => getData(runtime.value))
+    const styleVars = computed(() => {
+      const accent = runtime.value.style?.accentColor
+      return accent ? { '--vp-headup-accent': accent } : {}
+    })
     let observer
     let tries = 0
 
     function syncAnchors() {
       if (!runtime.value.enabled) return
-      if (runtime.value.hud?.enabled) readyHud.value = ensureAnchor('vp-headup-hud-anchor', 'hud')
-      if (runtime.value.detail?.enabled) readyDetail.value = ensureAnchor('vp-headup-detail-anchor', 'detail')
+      if (runtime.value.hud?.enabled) readyHud.value = ensureAnchor('vp-headup-hud-anchor', 'hud', runtime.value.target?.hud)
+      if (runtime.value.detail?.enabled) readyDetail.value = ensureAnchor('vp-headup-detail-anchor', 'detail', runtime.value.target?.detail)
       tries += 1
     }
 
@@ -173,7 +196,8 @@ export const Headup = defineComponent({
       const title = template(runtime.value.hud?.title || '{name} {version}', data.value, runtime.value.fallback)
       const dirty = data.value.dirty && runtime.value.hud?.showDirty
       return h('button', {
-        class: ['vp-headup-pill', dirty ? 'is-dirty' : ''],
+        class: ['vp-headup-pill', runtime.value.style?.pillClass, dirty ? 'is-dirty' : ''],
+        style: styleVars.value,
         type: 'button',
         title,
         onClick: () => {
@@ -187,7 +211,8 @@ export const Headup = defineComponent({
     }
 
     const detailButton = () => h('button', {
-      class: 'vp-headup-icon',
+      class: ['vp-headup-icon', runtime.value.style?.iconClass],
+      style: styleVars.value,
       type: 'button',
       title: runtime.value.detail?.iconLabel || 'Open site information',
       'aria-label': runtime.value.detail?.iconLabel || 'Open site information',
@@ -199,7 +224,8 @@ export const Headup = defineComponent({
       ? h(Teleport, { to: 'body' }, [
         h('div', { class: 'vp-headup-backdrop', onClick: () => { open.value = false } }),
         h('section', {
-          class: 'vp-headup-modal',
+          class: ['vp-headup-modal', runtime.value.style?.modalClass],
+          style: styleVars.value,
           role: 'dialog',
           'aria-modal': 'true',
           'aria-label': runtime.value.detail?.title || 'Site information'

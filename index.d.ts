@@ -14,6 +14,16 @@ export interface HeadupRuntimeConfig {
     title?: string
     iconLabel?: string
   }
+  target?: {
+    hud?: string
+    detail?: string
+  }
+  style?: {
+    accentColor?: string
+    pillClass?: string
+    iconClass?: string
+    modalClass?: string
+  }
   locale?: string
   fallback?: string
 }

@@ -1,6 +1,6 @@
 # vitepress-headup
 
-`vitepress-headup` adds a small, theme-aware HUD to the VitePress navbar. It can show package version, git commit, branch, content update time, and a polished detail popover.
+`vitepress-headup` adds a small, theme-aware head-up text to the VitePress navbar. It can show the current git commit, branch, package version, content update time, and a polished detail popover.
 
 It is intentionally defensive: if VitePress changes a navbar selector, the component falls back to the nearest available navbar area instead of crashing the site.
 
@@ -23,8 +23,8 @@ export default defineConfig({
       headupPlugin({
         hud: {
           enabled: true,
-          label: 'v{version}',
-          title: '{name} {version} · {commit}'
+          label: '{commit}',
+          title: 'Git commit {commit}'
         },
         detail: {
           enabled: true,
@@ -40,22 +40,16 @@ export default defineConfig({
 
 ```ts
 // .vitepress/theme/index.ts
-import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
-import { Headup } from 'vitepress-headup'
+import { withHeadup } from 'vitepress-headup'
 import 'vitepress-headup/style.css'
 
-export default {
-  extends: DefaultTheme,
-  Layout() {
-    return h(DefaultTheme.Layout, null, {
-      'layout-bottom': () => h(Headup)
-    })
-  }
-}
+export default withHeadup({
+  extends: DefaultTheme
+})
 ```
 
-The HUD is inserted before the VitePress appearance switch when possible. The detail icon is inserted near social links when possible.
+The HUD is inserted before the VitePress appearance switch when possible. The detail icon is inserted near social links when possible. The default HUD label is `{commit}` and renders nothing if no git commit is available.
 
 ## Options
 
@@ -64,9 +58,9 @@ headupPlugin({
   enabled: true,
   hud: {
     enabled: true,
-    label: 'v{version}',
-    title: '{name} {version}',
-    showDirty: true
+    label: '{commit}',
+    title: '{name} {version} · {branch}@{commit}',
+    showDirty: false
   },
   detail: {
     enabled: true,
@@ -121,6 +115,8 @@ headupPlugin({
   }
 })
 ```
+
+When the resolved HUD label is empty, the navbar text is not rendered. This keeps sites without git metadata visually clean.
 
 ## Runtime override
 

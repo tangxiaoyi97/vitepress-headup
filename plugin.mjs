@@ -24,9 +24,9 @@ const DEFAULT_OPTIONS = {
   },
   hud: {
     enabled: true,
-    label: 'v{version}',
-    title: '{name} {version}',
-    showDirty: true
+    label: '{commit}',
+    title: '{name} {version} · {branch}@{commit}',
+    showDirty: false
   },
   git: {
     enabled: true,

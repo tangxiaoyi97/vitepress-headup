@@ -7,9 +7,9 @@ const DEFAULT_RUNTIME = {
   enabled: true,
   hud: {
     enabled: true,
-    label: 'v{version}',
-    title: '{name} {version}',
-    showDirty: true
+    label: '{commit}',
+    title: '{name} {version} · {branch}@{commit}',
+    showDirty: false
   },
   detail: {
     enabled: true,
@@ -73,9 +73,9 @@ function getData(runtime) {
     name: generated.site?.name || fallback,
     version: generated.site?.version || fallback,
     description: generated.site?.description || '',
-    branch: generated.git?.branch || fallback,
-    commit: generated.git?.shortCommit || generated.git?.commit || fallback,
-    fullCommit: generated.git?.commit || fallback,
+    branch: generated.git?.branch || '',
+    commit: generated.git?.shortCommit || generated.git?.commit || '',
+    fullCommit: generated.git?.commit || '',
     tag: generated.git?.tag || '',
     remote: generated.git?.remote || '',
     dirty: Boolean(generated.git?.dirty),
@@ -192,8 +192,9 @@ export const Headup = defineComponent({
     })
 
     const hudNode = () => {
-      const label = template(runtime.value.hud?.label || 'v{version}', data.value, runtime.value.fallback)
-      const title = template(runtime.value.hud?.title || '{name} {version}', data.value, runtime.value.fallback)
+      const label = template(runtime.value.hud?.label || '{commit}', data.value, '').trim()
+      if (!label) return null
+      const title = template(runtime.value.hud?.title || '{name} {version} · {branch}@{commit}', data.value, runtime.value.fallback)
       const dirty = data.value.dirty && runtime.value.hud?.showDirty
       return h('button', {
         class: ['vp-headup-pill', runtime.value.style?.pillClass, dirty ? 'is-dirty' : ''],
@@ -204,7 +205,6 @@ export const Headup = defineComponent({
           if (runtime.value.detail?.enabled) open.value = true
         }
       }, [
-        h('span', { class: 'vp-headup-dot' }),
         h('span', { class: 'vp-headup-label' }, label),
         dirty ? h('span', { class: 'vp-headup-dirty', title: 'Working tree has local changes' }, '*') : null
       ])

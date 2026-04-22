@@ -168,6 +168,13 @@ export function headupPlugin(options = {}) {
   return {
     name: 'vitepress-headup',
     enforce: 'pre',
+    config() {
+      return {
+        ssr: {
+          noExternal: ['vitepress-headup']
+        }
+      }
+    },
     configResolved(config) {
       root = config.root || process.cwd()
       payload = createData(root, options)

@@ -1,0 +1,196 @@
+.vp-headup-anchor {
+  display: inline-flex;
+  align-items: center;
+}
+
+.vp-headup-pill,
+.vp-headup-icon,
+.vp-headup-close {
+  border: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.vp-headup-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  margin: 0 8px;
+  padding: 0 11px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-divider) 78%, transparent);
+  border-radius: 999px;
+  color: var(--vp-c-text-2);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--vp-c-bg-soft) 72%, transparent), color-mix(in srgb, var(--vp-c-bg) 88%, transparent));
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--vp-c-brand-1) 10%, transparent);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: .01em;
+  transition: border-color .2s ease, color .2s ease, transform .2s ease, background .2s ease;
+}
+
+.vp-headup-pill:hover {
+  color: var(--vp-c-brand-1);
+  border-color: color-mix(in srgb, var(--vp-c-brand-1) 48%, var(--vp-c-divider));
+  transform: translateY(-1px);
+}
+
+.vp-headup-pill.is-dirty {
+  border-color: color-mix(in srgb, var(--vp-c-warning-1, #eab308) 48%, var(--vp-c-divider));
+}
+
+.vp-headup-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--vp-c-brand-1);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--vp-c-brand-1) 14%, transparent);
+}
+
+.vp-headup-dirty {
+  color: var(--vp-c-warning-1, #eab308);
+}
+
+.vp-headup-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-left: 4px;
+  border-radius: 999px;
+  color: var(--vp-c-text-2);
+  transition: color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.vp-headup-icon:hover {
+  color: var(--vp-c-brand-1);
+  background: var(--vp-c-default-soft);
+  transform: translateY(-1px);
+}
+
+.vp-headup-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.vp-headup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background:
+    radial-gradient(circle at 75% 5%, color-mix(in srgb, var(--vp-c-brand-1) 22%, transparent), transparent 36%),
+    color-mix(in srgb, var(--vp-c-bg) 62%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.vp-headup-modal {
+  position: fixed;
+  top: 72px;
+  right: max(24px, calc((100vw - var(--vp-layout-max-width, 1440px)) / 2 + 24px));
+  z-index: 91;
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100vh - 104px);
+  overflow: auto;
+  padding: 22px;
+  border: 1px solid color-mix(in srgb, var(--vp-c-divider) 72%, transparent);
+  border-radius: 24px;
+  color: var(--vp-c-text-1);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--vp-c-bg-elv) 94%, transparent), color-mix(in srgb, var(--vp-c-bg-soft) 96%, transparent));
+  box-shadow: var(--vp-shadow-5, 0 24px 64px rgba(0, 0, 0, .22));
+}
+
+.vp-headup-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.vp-headup-kicker {
+  margin: 0 0 4px;
+  color: var(--vp-c-brand-1);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.vp-headup-modal h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.vp-headup-close {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-default-soft);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.vp-headup-close:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.vp-headup-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.vp-headup-row {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid color-mix(in srgb, var(--vp-c-divider) 62%, transparent);
+}
+
+.vp-headup-row-label {
+  color: var(--vp-c-text-3);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.vp-headup-row-value {
+  overflow-wrap: anywhere;
+  color: var(--vp-c-text-1);
+  font-size: 13px;
+}
+
+.vp-headup-custom {
+  margin: 18px 0 0;
+  padding: 12px;
+  border-radius: 14px;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-bg-soft);
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .vp-headup-pill {
+    display: none;
+  }
+
+  .vp-headup-modal {
+    top: 64px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+  }
+
+  .vp-headup-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

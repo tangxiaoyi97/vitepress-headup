@@ -1,0 +1,41 @@
+{
+  "name": "vitepress-headup",
+  "version": "0.1.0",
+  "description": "A configurable VitePress navbar HUD for version, update, and git metadata.",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": [
+    "./style.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./client.mjs"
+    },
+    "./plugin": {
+      "types": "./plugin.d.ts",
+      "import": "./plugin.mjs"
+    },
+    "./style.css": "./style.css"
+  },
+  "files": [
+    "client.mjs",
+    "plugin.mjs",
+    "index.d.ts",
+    "plugin.d.ts",
+    "style.css",
+    "README.md"
+  ],
+  "keywords": [
+    "vitepress",
+    "navbar",
+    "hud",
+    "git",
+    "version"
+  ],
+  "peerDependencies": {
+    "vitepress": "^1.0.0",
+    "vue": "^3.3.0"
+  },
+  "devDependencies": {}
+}

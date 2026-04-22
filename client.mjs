@@ -147,6 +147,20 @@ function row(label, value) {
   ])
 }
 
+function pluginFooter() {
+  const github = generated.headup?.github || 'https://github.com/tangxiaoyi97/vitepress-headup'
+  const commit = generated.headup?.shortCommit || generated.headup?.commit || ''
+  return h('footer', { class: 'vp-headup-plugin-footer' }, [
+    commit ? h('span', { class: 'vp-headup-plugin-commit' }, commit) : null,
+    commit ? h('span', { class: 'vp-headup-plugin-dot', 'aria-hidden': 'true' }, '·') : null,
+    h('a', {
+      href: github,
+      target: '_blank',
+      rel: 'noopener noreferrer'
+    }, 'GitHub')
+  ])
+}
+
 export const Headup = defineComponent({
   name: 'VitePressHeadup',
   props: {
@@ -265,7 +279,8 @@ export const Headup = defineComponent({
           ]),
           generated.custom && Object.keys(generated.custom).length
             ? h('pre', { class: 'vp-headup-custom' }, JSON.stringify(generated.custom, null, 2))
-            : null
+            : null,
+          pluginFooter()
         ])
         : null)
     ])

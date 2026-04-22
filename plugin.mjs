@@ -1,9 +1,13 @@
 import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const VIRTUAL_ID = 'virtual:vitepress-headup/data'
 const RESOLVED_VIRTUAL_ID = '\0' + VIRTUAL_ID
+const PLUGIN_NAME = 'vitepress-headup'
+const PLUGIN_REPO_URL = 'https://github.com/tangxiaoyi97/vitepress-headup'
+const PLUGIN_DIR = path.dirname(fileURLToPath(import.meta.url))
 
 const DEFAULT_OPTIONS = {
   enabled: true,
@@ -75,6 +79,14 @@ function readPackage(cwd, packageJson) {
     return JSON.parse(fs.readFileSync(file, 'utf8'))
   } catch {
     return {}
+  }
+}
+
+function readJson(file) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'))
+  } catch {
+    return null
   }
 }
 
@@ -150,6 +162,31 @@ function collectGit(cwd, options) {
   }
 }
 
+function shortHash(value) {
+  return value ? value.slice(0, 7) : ''
+}
+
+function commitFromResolved(value) {
+  const match = String(value || '').match(/#([0-9a-f]{7,40})(?:$|[^\w-])/i)
+  return match?.[1] || ''
+}
+
+function collectPluginInfo(root) {
+  const lock = readJson(path.resolve(root, 'package-lock.json'))
+  const lockedPackage = lock?.packages?.[`node_modules/${PLUGIN_NAME}`]
+  const dependency = lock?.dependencies?.[PLUGIN_NAME]
+  const lockCommit = commitFromResolved(lockedPackage?.resolved || dependency?.resolved)
+  const gitCommit = safeExec('git rev-parse HEAD', PLUGIN_DIR)
+  const commit = lockCommit || gitCommit
+
+  return {
+    name: PLUGIN_NAME,
+    github: PLUGIN_REPO_URL,
+    commit: commit || null,
+    shortCommit: shortHash(commit) || null
+  }
+}
+
 function createData(root, rawOptions) {
   const options = mergeDeep(DEFAULT_OPTIONS, rawOptions)
   const pkg = readPackage(root, options.packageJson)
@@ -165,6 +202,7 @@ function createData(root, rawOptions) {
       description: pkg.description || ''
     },
     git,
+    headup: collectPluginInfo(root),
     lastUpdated,
     generatedAt,
     custom: options.custom || {}

@@ -51,6 +51,8 @@ export default withHeadup({
 
 The HUD is inserted inside the native VitePress appearance area when possible, so default navbar separators stay intact. The detail icon is inserted inside the native social-links area and copies VitePress social-link dimensions and hover behavior. The default HUD label is `{commit}` and renders nothing if no git commit is available.
 
+The detail popover footer shows the `vitepress-headup` plugin commit separately from the site commit, followed by a subtle link to [GitHub](https://github.com/tangxiaoyi97/vitepress-headup). In npm projects this commit is read from `package-lock.json`; local plugin development falls back to the plugin repository git state.
+
 ## Options
 
 ```ts

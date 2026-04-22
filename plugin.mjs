@@ -180,6 +180,9 @@ export function headupPlugin(options = {}) {
     enforce: 'pre',
     config() {
       return {
+        optimizeDeps: {
+          exclude: ['vitepress-headup']
+        },
         ssr: {
           noExternal: ['vitepress-headup']
         }
